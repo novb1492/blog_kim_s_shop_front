@@ -21,8 +21,10 @@
 전화번호:<input type="text" id="phoneNum" onkeyup="checkPhone()" placeholder="전화번호를 입력해주세요">
 <input type="button" id="sendsms" onclick="sendsms()" value="인증번호 전송">
 <br>
-<input type="button" id="goToServer" onclick="goToServer()" value="확인">
-<input type="button" id="reWrtiepHone" onclick="reWriteNum()" value="전화번호 수정"> 
+인증번호 :<input type="text" id="smsNum" placeholder="인증번호를 입력해주세요">
+<br>
+<input type="button" id="goToServer" onclick="sendNumToServer()" value="확인">
+<input type="button" id="reWrtiepHone" onclick="reWritePhone()" value="전화번호 수정"> 
 <br>
 <br>
 주소를 입력해주세요
@@ -40,26 +42,60 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 var xhr = new XMLHttpRequest();
-function sendsms() {
-	 let data=JSON.stringify({
-		 "phoneNum":""+document.getElementById('phoneNum').value+""
-		 });
-	 xhr.open('POST','http://localhost:8080/auth/confrimPhoneNum',true);
-	 xhr.setRequestHeader("Content-Type",'application/json');
-	 xhr.send(data);
+function sendNumToServer() {
+	let data=document.getElementById('smsNum');
+	 xhr.open('POST','http://localhost:8080/auth/cofrimSmsNum',true);
+	 xhr.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
+	 xhr.send('randNum='+data.value);
 	 xhr.onload=function(){
 	        if(xhr.status==200){
 	        	let color,messege;
 	        	console.log(xhr.response);
-	        	
+	        	if(xhr.response=='true'){
+	        		color='blue';
+	        		messege='';
+	        	}else{
+	        		color='red';
+	        		messege='abc';
+	        	}
+	        	data.style.backgroundColor=color;
 	        	return;	
 	        }
 	        alert('통신 실패');
 	    }
 }
+function reWritePhone() {
+	 document.getElementById('sendsms').disabled=false;
+	 document.getElementById('phoneNum').disabled=false;  
+}
+function sendsms() {
+	 document.getElementById('sendsms').disabled=true;  
+	 let data=JSON.stringify({
+		 "phoneNum":""+document.getElementById('phoneNum').value+""
+		 });
+	 xhr.open('POST','http://localhost:8080/auth/sendSms',true);
+	 xhr.setRequestHeader("Content-Type",'application/json');
+	 xhr.send(data);
+	 xhr.onload=function(){
+	        if(xhr.status==200){
+	        	var result=JSON.parse(xhr.response);
+	        	if(result.bool){
+	        		 document.getElementById('sendsms').disabled=true;
+	        		 document.getElementById('phoneNum').disabled=true;  
+	        		alert(result.messege);
+	        		return;
+	        	}
+	        	alert(result.messege);
+	        	 document.getElementById('sendsms').disabled=false;  
+	        	return;
+	        }
+	        document.getElementById('sendsms').disabled=false;  
+	        alert('통신 실패');
+	    }
+}
 function checkPhone() {
 	let data=document.getElementById('phoneNum');
-	 xhr.open('POST','http://localhost:8080/auth/sendSms',true);
+	 xhr.open('POST','http://localhost:8080/auth/confrimPhoneNum',true);
 	 xhr.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
 	 xhr.send('phoneNum='+data.value);
 	 xhr.onload=function(){
