@@ -18,21 +18,67 @@
 비밀번호 확인:<input type="password" id="pwd2" placeholder="비밀번호를 다시 입력해주세요"> 
 <br>
 <br>
+전화번호:<input type="text" id="phoneNum" onkeyup="checkPhone()" placeholder="전화번호를 입력해주세요">
+<input type="button" id="sendsms" onclick="sendsms()" value="인증번호 전송">
+<br>
+<input type="button" id="goToServer" onclick="goToServer()" value="확인">
+<input type="button" id="reWrtiepHone" onclick="reWriteNum()" value="전화번호 수정"> 
+<br>
+<br>
 주소를 입력해주세요
 <br>
-<input type="text" id="sample6_postcode" placeholder="우편번호">
+<input type="text" id="sample6_postcode" placeholder="우편번호" disabled>
 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
 <br>
-<input type="text" id="sample6_address" placeholder="주소">
+<input type="text" id="sample6_address" placeholder="주소" disabled>
 <br>
 <input type="text" id="sample6_detailAddress" placeholder="상세주소">
-<input type="text" id="sample6_extraAddress" placeholder="참고항목">
+<input type="text" id="sample6_extraAddress" placeholder="참고항목" disabled>
 <br>
 <input type="button" onclick="insertUser()" value="회원가입">
 <br>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 var xhr = new XMLHttpRequest();
+function sendsms() {
+	 let data=JSON.stringify({
+		 "phoneNum":""+document.getElementById('phoneNum').value+""
+		 });
+	 xhr.open('POST','http://localhost:8080/auth/confrimPhoneNum',true);
+	 xhr.setRequestHeader("Content-Type",'application/json');
+	 xhr.send(data);
+	 xhr.onload=function(){
+	        if(xhr.status==200){
+	        	let color,messege;
+	        	console.log(xhr.response);
+	        	
+	        	return;	
+	        }
+	        alert('통신 실패');
+	    }
+}
+function checkPhone() {
+	let data=document.getElementById('phoneNum');
+	 xhr.open('POST','http://localhost:8080/auth/sendSms',true);
+	 xhr.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
+	 xhr.send('phoneNum='+data.value);
+	 xhr.onload=function(){
+	        if(xhr.status==200){
+	        	let color,messege;
+	        	console.log(xhr.response);
+	        	if(xhr.response=='true'){
+	        		color='blue';
+	        		messege='';
+	        	}else{
+	        		color='red';
+	        		messege='abc';
+	        	}
+	        	data.style.backgroundColor=color;
+	        	return;	
+	        }
+	        alert('통신 실패');
+	    }
+}
 function checkEmail(){
 	 let data=document.getElementById('email');
 	 xhr.open('POST','http://localhost:8080/auth/confrimEmail',true);
@@ -56,7 +102,17 @@ function checkEmail(){
 	    }
 }
 function insertUser(){
-	 let data=JSON.stringify({"email":""+document.getElementById('email').value+"","pwd":""+document.getElementById('pwd').value+"","pwd2":""+document.getElementById('pwd2').value+"","name":""+document.getElementById('name').value+""});
+	 let data=JSON.stringify({
+		 "email":""+document.getElementById('email').value+"",
+		 "pwd":""+document.getElementById('pwd').value+"",
+		 "pwd2":""+document.getElementById('pwd2').value+"",
+		 "name":""+document.getElementById('name').value+"",
+		 "postcode":""+document.getElementById('sample6_postcode').value+"",
+		 "address":""+document.getElementById('sample6_address').value+"",
+		 "detailAddress":""+document.getElementById('sample6_detailAddress').value+"",
+		 "extraAddress":""+document.getElementById('sample6_extraAddress').value+"",
+		 "phoneNum":""+document.getElementById('phoneNum').value+""
+		 });
 	 console.log(data);
 	 xhr.open('POST','http://localhost:8080/auth/insertUser',true);
 	 xhr.setRequestHeader("Content-Type",'application/json');
