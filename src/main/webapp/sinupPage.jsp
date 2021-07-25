@@ -70,12 +70,10 @@ function reWritePhone() {
 }
 function sendsms() {
 	 document.getElementById('sendsms').disabled=true;  
-	 let data=JSON.stringify({
-		 "phoneNum":""+document.getElementById('phoneNum').value+""
-		 });
+	 let data=document.getElementById('phoneNum');
 	 xhr.open('POST','http://localhost:8080/auth/sendSms',true);
-	 xhr.setRequestHeader("Content-Type",'application/json');
-	 xhr.send(data);
+	 xhr.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
+	 xhr.send('phoneNum='+data.value);
 	 xhr.onload=function(){
 	        if(xhr.status==200){
 	        	var result=JSON.parse(xhr.response);
