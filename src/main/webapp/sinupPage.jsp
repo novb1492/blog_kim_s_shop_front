@@ -43,23 +43,26 @@
 <script>
 var xhr = new XMLHttpRequest();
 function sendNumToServer() {
-	let data=document.getElementById('smsNum');
+	 let data=JSON.stringify({
+		 "phoneNum":""+document.getElementById('phoneNum').value+"",
+		 "tempNum":""+document.getElementById('smsNum').value+""
+		 });
 	 xhr.open('POST','http://localhost:8080/auth/cofrimSmsNum',true);
-	 xhr.setRequestHeader("Content-Type",'application/x-www-form-urlencoded');
-	 xhr.send('randNum='+data.value);
+	 xhr.setRequestHeader("Content-Type",'application/json');
+	 xhr.send(data);
 	 xhr.onload=function(){
 	        if(xhr.status==200){
-	        	let color,messege;
-	        	console.log(xhr.response);
-	        	if(xhr.response=='true'){
-	        		color='blue';
-	        		messege='';
-	        	}else{
-	        		color='red';
-	        		messege='abc';
+	        	var result=JSON.parse(xhr.response);
+	        	if(result.bool){
+	        		 document.getElementById('goToServer').disabled=true;
+	        		 document.getElementById('sendsms').disabled=true;  
+	        		 document.getElementById('reWrtiepHone').disabled=true;  
+	        		 document.getElementById('smsNum').disabled=true;  
+	        		alert(result.messege);
+	        		return;
 	        	}
-	        	data.style.backgroundColor=color;
-	        	return;	
+	        	alert(result.messege);
+	        	return;
 	        }
 	        alert('통신 실패');
 	    }
