@@ -26,15 +26,19 @@ function doLogin() {
 		 });
 	 xhr.open('POST','http://localhost:8080/login',true);
 	 xhr.setRequestHeader("Content-Type",'application/json');
+	 xhr.withCredentials = true;
 	 xhr.send(data);
 	 xhr.onload=function(){
 	        if(xhr.status==200){
+	        	 jwt=xhr.getResponseHeader('Authorization');
+		            localStorage.setItem('Authorization', jwt);
+		            window.location.href = 'http://localhost:3030/kim_s_Shop/index.jsp';
 	        		return;
 	        	}
 	        	alert(result.messege);
 	        	return;
+	        	 alert('통신 실패');
 	        }
-	        alert('통신 실패');
 }
 function goNaverLogin(){
     xhr.open('POST', 'http://localhost:8080/auth/naver', true); //j쿼리 $ajax.({type,url},true가 비동기)
