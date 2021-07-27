@@ -7,7 +7,7 @@
 <title>회원가입 페이지</title>
 </head>
 <body>
-<a href="index.jsp">kim's Shop</a>
+<a href=index.jsp>Kim's Shop</a>
 <br>
 이메일:<input type="text" id="email" onkeyup="checkEmail()" placeholder="이메일을 입력해주세요">
 <br>
