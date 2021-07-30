@@ -33,7 +33,7 @@ function doLogin() {
 	        	if(result.bool){
 	        		jwt=xhr.getResponseHeader('Authorization');
 		            localStorage.setItem('Authorization', jwt);
-		            window.location.href = 'http://localhost:3030/kim_s_Shop/index.jsp';
+		            window.location.href = 'http://localhost:3030/kim_s_Shop/index.jsp?email='+result.messege;
 	        		return;
 	        	}	
 	        	alert(result.messege);

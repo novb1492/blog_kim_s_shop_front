@@ -1,6 +1,9 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+    String s=request.getParameter("email");
+    %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +15,9 @@
 <a href=index.jsp>Kim's Shop</a>
 <br>
 <a href="sinupPage.jsp">회원가입</a>
+<%if(s==null){ %>
 <a href="loginPage.jsp">로그인</a>
+<%} %>
 </body>
 <script type="text/javascript">
 var params = new URLSearchParams(location.search);
