@@ -25,6 +25,9 @@
 <script type="text/javascript">
 var xhr=new XMLHttpRequest();
 function sendNumToServer() {
+	 document.getElementById('goToServer').disabled=true;  
+	 document.getElementById('reWrtiepHone').disabled=true;  
+	 document.getElementById('smsNum').disabled=true;  
 	 let data=JSON.stringify({
 		 "email":""+document.getElementById('email').value+"",
 		 "tempNum":""+document.getElementById('smsNum').value+""
@@ -36,19 +39,22 @@ function sendNumToServer() {
 	        if(xhr.status==200){
 	        	var result=JSON.parse(xhr.response);
 	        	if(result.bool){
-	        		 document.getElementById('goToServer').disabled=true;  
-	        		 document.getElementById('reWrtiepHone').disabled=true;  
-	        		 document.getElementById('smsNum').disabled=true;  
-	        		 location.href="reWritePwdPage.jsp?email="+result.messege;
+	        		 location.href="loginPage.jsp";
 	        		return;
 	        	}
+	       		 document.getElementById('goToServer').disabled=false;  
+	    		 document.getElementById('reWrtiepHone').disabled=false;  
+	    		 document.getElementById('smsNum').disabled=false;  
 	        	alert(result.messege);
 	        	return;
 	        }
+   		 	document.getElementById('goToServer').disabled=false;  
+		 	document.getElementById('reWrtiepHone').disabled=false;  
+		 	document.getElementById('smsNum').disabled=false;  
 	        alert('통신 실패');
 	    }
 }
-function reWritePhone() {
+function reWriteEmail() {
 	 document.getElementById('sendEmail').disabled=false;
 	 document.getElementById('email').disabled=false;  
 }
