@@ -14,7 +14,8 @@
 비밀번호:<input type="password" id="pwd" placeholder="비밀번호를 입력해 주세요">
 <br>
 <input type="button" onclick="doLogin()" value="로그인">&nbsp;<input type="button"onclick="goNaverLogin()"value="네이버 로그인">&nbsp;<input type="button"onclick="goKakaoLogin()"value="카카오톡 로그인">
-
+<br>
+<a href="findIdPage.jsp">이메일을 잊어 버리셨나요?</a>&nbsp;<a href="findPwdPage.jsp">비밀번호를 잊어 버리셨나요?</a>
 <script>
 var xhr=new XMLHttpRequest();
 function doLogin() {
