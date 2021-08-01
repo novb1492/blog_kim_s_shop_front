@@ -53,6 +53,17 @@ function goNaverLogin(){
         }
     }  
 }
+function goKakaoLogin(){
+    xhr.open('POST', 'http://localhost:8080/auth/kakao', true); //j쿼리 $ajax.({type,url},true가 비동기)
+    xhr.send(); /// ajax data부분
+    xhr.onload = function() { 
+        if(xhr.status==200){
+        	location.href=xhr.response;
+        }else{
+            alert('통신에 실패했습니다');
+        }
+    }  
+}
 </script>
 </body>
 </html>

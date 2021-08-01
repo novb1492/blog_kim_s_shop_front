@@ -39,11 +39,12 @@ function sendNumToServer() {
 	        if(xhr.status==200){
 	        	var result=JSON.parse(xhr.response);
 	        	if(result.bool){
+	        		alert(result.messege);
 	        		 location.href="loginPage.jsp";
 	        		return;
 	        	}
 	       		 document.getElementById('goToServer').disabled=false;  
-	    		 document.getElementById('reWrtiepHone').disabled=false;  
+	    		 document.getElementById('sendEmail').disabled=false;  
 	    		 document.getElementById('smsNum').disabled=false;  
 	        	alert(result.messege);
 	        	return;
